@@ -1,0 +1,100 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0px;
+  background-color: #f4f4f4;
+  font-family: 'Arial', sans-serif;
+  transition: background-color 0.3s;
+  position: relative;
+}
+
+.dark-mode {
+  background-color: #222;
+  color: #fff;
+  .cell {
+    background-color: green;
+  }
+}
+
+.light-mode {
+  background-color: burlywood;
+}
+
+#toggleButton,
+#resetButton,
+#modeButton {
+  position: absolute;
+  top: 10px;
+  padding: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+}
+
+#toggleButton {
+  right: 10px;
+  background-color: #3498db;
+  color: #fff;
+  
+}
+
+#resetButton {
+  left: 10px;
+  background-color: #e74c3c;
+  color: #fff;
+}
+
+#modeButton {
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #340347;
+  color: #fff;
+}
+
+#board {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  gap: 5px;
+  margin-top: 20px;
+}
+
+.cell {
+  width: 100px;
+  color: white;
+  height: 100px;
+  font-size: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #140303;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.cell:hover {
+  background-color: #994141;
+  color: rgb(255, 0, 0);
+}
+
+.cell.dark-mode {
+  background-color: lightgreen;
+  color: red;
+}
+
+.cell.light-mode {
+  background-color: lightgreen;
+  color: red;
+}
+
+.winner {
+  color: rgb(5, 60, 212);
+  font-weight: bold;
+}
+
+.draw {
+  color: red;
+  font-weight: bold;
+}

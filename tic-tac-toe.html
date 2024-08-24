@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link rel="stylesheet" href="style.css">
+
+  <title>Tic Tac Toe</title>
+</head>
+<body class="light-mode">
+  <button id="resetButton" onclick="resetGame()">Reset Game</button>
+  <button id="toggleButton" onclick="toggleDarkMode()">🌙</button>
+  <button id="modeButton" onclick="toggleMode()">2 Players</button>
+  <div id="board"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const board = document.getElementById('board');
+      const cells = [];
+      const modeButton = document.getElementById('modeButton');
+
+      let currentPlayer = 'X';
+      let winner = null;
+      let isTwoPlayersMode = true;
+
+      
+      for (let i = 0; i < 9; i++) {
+        const cell = document.createElement('div');
+        cell.classList.add('cell');
+        cell.dataset.index = i;
+        cell.addEventListener('click', handleCellClick);
+        cells.push(cell);
+        board.appendChild(cell);
+      }
+
+      function handleCellClick(event) {
+        if (winner || event.target.textContent !== '') return;
+
+        const index = event.target.dataset.index;
+        cells[index].textContent = currentPlayer;
+
+        if (checkForWinner()) {
+          winner = currentPlayer;
+          highlightWinnerCells();
+        } else if (checkForDraw()) {
+          winner = 'draw';
+        } else {
+          currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+
+          if (!isTwoPlayersMode && currentPlayer === 'O') {
+            
+            makeComputerMove();
+          }
+        }
+      }
+
+      function checkForWinner() {
+        const winningCombinations = [
+          [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+          [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+          [0, 4, 8], [2, 4, 6]              // Diagonals
+        ];
+
+        return winningCombinations.some(combination => {
+          const [a, b, c] = combination;
+          return cells[a].textContent &&
+                 cells[a].textContent === cells[b].textContent &&
+                 cells[a].textContent === cells[c].textContent;
+        });
+      }
+
+      function checkForDraw() {
+        return cells.every(cell => cell.textContent !== '');
+      }
+
+      function highlightWinnerCells() {
+        const winningCombinations = [
+          [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+          [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+          [0, 4, 8], [2, 4, 6]              // Diagonals
+        ];
+
+        winningCombinations.forEach(combination => {
+          const [a, b, c] = combination;
+          if (cells[a].textContent === cells[b].textContent &&
+              cells[a].textContent === cells[c].textContent) {
+            cells[a].classList.add('winner');
+            cells[b].classList.add('winner');
+            cells[c].classList.add('winner');
+          }
+        });
+      }
+
+      function makeComputerMove() {
+        const emptyCells = cells.filter(cell => cell.textContent === '');
+        if (emptyCells.length > 0) {
+          const randomIndex = Math.floor(Math.random() * emptyCells.length);
+          const computerCell = emptyCells[randomIndex];
+          computerCell.textContent = 'O';
+
+          if (checkForWinner()) {
+            winner = 'O';
+            highlightWinnerCells();
+          } else if (checkForDraw()) {
+            winner = 'draw';
+          } else {
+            currentPlayer = 'X';
+          }
+        }
+      }
+
+      // Dark/Light Mode Toggle
+      const toggleButton = document.getElementById('toggleButton');
+      toggleButton.addEventListener('click', toggleDarkMode);
+
+      function toggleDarkMode() {
+        const body = document.body;
+        body.classList.toggle('dark-mode');
+        body.classList.toggle('light-mode');
+
+        cells.forEach(cell => {
+          cell.classList.toggle('dark-mode');
+          cell.classList.toggle('light-mode');
+
+
+          modeButton.textContent = isTwoPlayersMode ? '2 Players' : 'With Computer';
+          
+        });
+
+
+      }
+
+      // Toggle Mode (2 Players or With Computer)
+      modeButton.addEventListener('click', toggleMode);
+
+      function toggleMode() {
+        isTwoPlayersMode = !isTwoPlayersMode;
+        modeButton.textContent = isTwoPlayersMode ? '2 Players' : 'With Computer';
+        resetGame();
+      }
+
+      // Reset Game
+      const resetButton = document.getElementById('resetButton');
+      resetButton.addEventListener('click', resetGame);
+
+      function resetGame() {
+        cells.forEach(cell => {
+          cell.textContent = '';
+          cell.classList.remove('winner', 'dark-mode', 'light-mode');
+        });
+
+        winner = null;
+        currentPlayer = 'X';
+
+        if (!isTwoPlayersMode && currentPlayer === 'O') {
+          
+          makeComputerMove();
+        }
+      }
+    });
+  </script>
+</body>
+</html>
