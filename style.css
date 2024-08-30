@@ -1,5 +1,7 @@
 body {
+  min-height: 100vh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh;
@@ -14,7 +16,7 @@ body {
   background-color: #222;
   color: #fff;
   .cell {
-    background-color: green;
+    background-color: rgb(150, 20, 150);
   }
 }
 
@@ -97,4 +99,12 @@ body {
 .draw {
   color: red;
   font-weight: bold;
+}
+
+footer{
+  position: absolute;
+  align-items: end;
+}
+.p{
+  color: aqua;
 }
